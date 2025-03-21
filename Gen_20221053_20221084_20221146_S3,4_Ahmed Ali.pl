@@ -1,7 +1,18 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%% task 1 %%%%%%%%%%%%%%%%%%%%%%%%%%%% 
 
 
+players_in_team(Team, Players) :-        
+    players_names(Team, [], Players).   % [] is an empty Acc to append players in
 
+% recursive case 
+players_names(Team, Acc, Players):-  
+    player(Name, Team, _),              % getting the name of the player from the player structure
+    \+ member(Name, Acc),               % if it is not exist in the Acc list  
+    append(Acc, [Name], NewAcc),        % then add the player name to the list 
+    players_names(Team, NewAcc, Players). % recall the function again to get another player
+
+% base case 
+players_names(_, Acc, Acc).             % return list of players stored in the Acc 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%% task 2 %%%%%%%%%%%%%%%%%%%%%%%%%%%% 
 
@@ -42,8 +53,32 @@ team_count_by_country(Country, Count) :-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%% task 3 %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%% task 4 %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% this is similar to task 1 %
+matches_of_team(Team, Matches) :-        
+    matches_list(Team, [], Matches).   % empty Acc to append matches in
+
+% recursive case 1
+matches_list(Team, Acc, Matches):-  
+    match(Team, Opponent, G1, G2),      % getting match where Team is Team1
+    \+ member((Team, Opponent, G1, G2), Acc),  % if it is not exist in the Acc list  
+    append(Acc, [(Team, Opponent, G1, G2)], NewAcc),  % then add the match to the list 
+    matches_list(Team, NewAcc, Matches). % recall the function again to get another match
+
+% recursive case 2
+matches_list(Team, Acc, Matches):-  
+    match(Opponent, Team, G1, G2),      % getting match where Team is Team2
+    \+ member((Opponent, Team, G1, G2), Acc),  % if it is not exist in the Acc list  
+    append(Acc, [(Opponent, Team, G1, G2)], NewAcc),  % then add the match to the list 
+    matches_list(Team, NewAcc, Matches). % recall the function again to get another match
+
+% base case
+matches_list(_, Acc, Acc).              % return list of matches stored in the Acc  
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%% task 5 %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+num_matches_of_team(Team, Count) :-        
+    matches_of_team(Team, Matches),  
+    length(Matches, Count).       
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%% task 6 %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
