@@ -5,7 +5,7 @@ This project is a Prolog-based football league query system for an Artificial In
 
 ## 📂 Files  
 - `league_data.pl` → Contains facts about teams, players, matches, and goals.  
-- `queries.pl` → Implements required Prolog predicates to answer league-related queries.  
+- `Gen_20221053_20221084_20221146_S3,4_Ahmed Ali.pl` → Implements required Prolog predicates to answer league-related queries.  
 
 ## 🔍 Features  
 - **List players in a specific team**  
