@@ -92,7 +92,7 @@ num_matches_of_team(Team, Count) :-
 % 3- return the max
 
 % Collect all scores
-get_all_scores(List) :- find_all_scores([], List), !. % cut to prevent backtracking
+get_all_scores(List) :- find_all_scores([], List).
 find_all_scores(Acc, List) :- % Acc = []
     goals(Player, Score), % for each goals fact in the file
     \+ member(Score, Acc), % if the score is not member in Acc -unique list-
