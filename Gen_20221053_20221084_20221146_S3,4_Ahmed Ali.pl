@@ -86,4 +86,30 @@ num_matches_of_team(Team, Count) :-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%% task 6 %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+% To get the max score of goals
+% 1- create a list and append all players score to it
+% 2- find the max from this list
+% 3- return the max
+
+
+% Collect all scores
+get_all_scores(List) :- find_all_scores([], List). % all scores will be returned in List after append them to the empty one
+find_all_scores(Acc, List) :- % Acc = []
+    goals(Player, Score), % for each goals fact in the file
+    \+ member(Score, Acc), % if the score is not memeber in Acc -unique list-
+    find_all_scores([Score | Acc], List). % recursive call with new Acc afetr append the current Score to it
+find_all_scores(List, List). % base case to stop after finish all goals facts
+
+% Find the maximum
+calculate_max_score([X], X). % base case is when only one element then it's the max
+calculate_max_score([H|T], Max) :-
+    calculate_max_score(T, MaxTail), % for each step we hold the head of the list
+    (H > MaxTail -> Max = H ; Max = MaxTail). % backtrack and compare between head and max number from the tail
+
+% Find the player with the max score
+top_scorer(Player) :-
+    get_all_scores(GoalsList),
+    calculate_max_score(GoalsList, MaxGoals),
+    goals(Player, MaxGoals). % return the Player
+    
 %%%%%%%%%%%%%%%%%%%%%%%%%%%% task 7 %%%%%%%%%%%%%%%%%%%%%%%%%%%% 
