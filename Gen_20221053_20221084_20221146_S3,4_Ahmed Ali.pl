@@ -48,14 +48,15 @@ count([_|Tail], Acc, Result) :-
 
 team_count_by_country(Country, Count) :-
     get_list_all_teams_with_country(Country, Teams),
-    count(Teams, Count).
+    count(Teams, Count) ,
+    !.
     
 %%%%%%%%%%%%%%%%%%%%%%%%%%%% task 3 %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 most_successful_team(Team) :-
     team(Team,_ , Num_of_winning_times_to_this_team),            % this line means select one team where 
     \+ (team(_, _, Num_of_winning_times_to_this_team_to_other_teams),      %   compare to all ather teams number of  winning is largest 
-        Num_of_winning_times_to_this_team_to_other_teams > Num_of_winning_times_to_this_team).  % why using not  it checks every other team but if i make it ,  and it will take one random %
-
+        Num_of_winning_times_to_this_team_to_other_teams > Num_of_winning_times_to_this_team),  % why using not  it checks every other team but if i make it ,  and it will take one random %
+        !.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%% task 4 %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % List all matches where a specific team participated
 % this is similar to task 1 %
