@@ -1,18 +1,18 @@
+:-consult(league_data).
 %%%%%%%%%%%%%%%%%%%%%%%%%%%% task 1 %%%%%%%%%%%%%%%%%%%%%%%%%%%% 
-
-
+% Get a list of all players in a specific team
 players_in_team(Team, Players) :-        
     players_names(Team, [], Players).   % [] is an empty Acc to append players in
 
 % recursive case 
 players_names(Team, Acc, Players):-  
-    player(Name, Team, _),              % getting the name of the player from the player structure
+    player(Name, Team, _),            % getting the name of the player from the player structure
     \+ member(Name, Acc),               % if it is not exist in the Acc list  
-    append(Acc, [Name], NewAcc),        % then add the player name to the list 
+    append(Acc, [Name], NewAcc),!,        % then add the player name to the list and do not backtrack to another options 
     players_names(Team, NewAcc, Players). % recall the function again to get another player
-
 % base case 
 players_names(_, Acc, Acc).             % return list of players stored in the Acc 
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%% task 2 %%%%%%%%%%%%%%%%%%%%%%%%%%%% 
 
@@ -57,22 +57,23 @@ most_successful_team(Team) :-
         Num_of_winning_times_to_this_team_to_other_teams > Num_of_winning_times_to_this_team).  % why using not  it checks every other team but if i make it ,  and it will take one random %
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%% task 4 %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% List all matches where a specific team participated
 % this is similar to task 1 %
 matches_of_team(Team, Matches) :-        
     matches_list(Team, [], Matches).   % empty Acc to append matches in
-
+    
 % recursive case 1
 matches_list(Team, Acc, Matches):-  
     match(Team, Opponent, G1, G2),      % getting match where Team is Team1
     \+ member((Team, Opponent, G1, G2), Acc),  % if it is not exist in the Acc list  
-    append(Acc, [(Team, Opponent, G1, G2)], NewAcc),  % then add the match to the list 
+    append(Acc, [(Team, Opponent, G1, G2)], NewAcc),!,  % then add the match to the list and do not backtrack
     matches_list(Team, NewAcc, Matches). % recall the function again to get another match
 
 % recursive case 2
 matches_list(Team, Acc, Matches):-  
     match(Opponent, Team, G1, G2),      % getting match where Team is Team2
     \+ member((Opponent, Team, G1, G2), Acc),  % if it is not exist in the Acc list  
-    append(Acc, [(Opponent, Team, G1, G2)], NewAcc),  % then add the match to the list 
+    append(Acc, [(Opponent, Team, G1, G2)], NewAcc),!,  % then add the match to the list and do not backtrack
     matches_list(Team, NewAcc, Matches). % recall the function again to get another match
 
 % base case
@@ -80,9 +81,11 @@ matches_list(_, Acc, Acc).              % return list of matches stored in the A
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%% task 5 %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%count all matches where a specific team participated
 num_matches_of_team(Team, Count) :-        
-    matches_of_team(Team, Matches),  
+    matches_of_team(Team, Matches),    % call the rule that we have implemented above to count its result
     length(Matches, Count).       
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%% task 6 %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
